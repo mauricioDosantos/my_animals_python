@@ -73,7 +73,7 @@
     <!-- Título cadastro -->
     <div class="py-5 text-center">
       <!-- <img class="d-block mx-auto mb-4" src="../assets/brand/bootstrap-logo.svg" alt="" width="72" height="57"> -->
-      <h2>Cadastro de atividade</h2>
+      <h2>Cadastro de animal</h2>
     </div>
 
     <!-- Formulário de cadastro -->
@@ -91,27 +91,33 @@
               </div>
             </div>
 
-            <div class="col-12">
-              <label for="id_description" class="form-label">Descrição</label>
-              <div class="input-group has-validation">
-                <input type="text" class="form-control" id="id_description" placeholder="Ex: Coleira" name="description" maxlength="250">
+            <div class="col-sm-12">
+              <label for="id_breed" class="form-label">Raça</label>
+              <input type="text" class="form-control" id="id_breed" placeholder="" value="" name="breed" maxlength="250" required>
               <div class="invalid-feedback">
-                  Your description is required.
-                </div>
+                Valid first name is required.
               </div>
             </div>
 
             <div class="col-sm-6">
-              <label for="id_price" class="form-label">Preço</label>
-              <input type="text" class="form-control" id="id_price" name="price" placeholder="" value="" required>
+              <label for="id_weight" class="form-label">Peso</label>
+              <input type="number" class="form-control" id="id_weight" name="weight" placeholder="" value="" required>
+              <div class="invalid-feedback">
+                Valid last price is required.
+              </div>
+            </div>
+
+            <div class="col-sm-6">
+              <label for="id_height" class="form-label">Altura</label>
+              <input type="number" class="form-control" id="id_height" name="height" placeholder="" value="" required>
               <div class="invalid-feedback">
                 Valid last price is required.
               </div>
             </div>
 
             <div class="col-6">
-              <label for="id_ref_date" class="form-label">Data da compra</label>
-              <input type="datetime-local" class="form-control" id="id_ref_date" name="ref_date" placeholder="1997-01-01" required>
+              <label for="id_birthday" class="form-label">Data de nascimento</label>
+              <input type="date" class="form-control" id="id_birthday" name="birthday" placeholder="1997-01-01" required>
               <div class="invalid-feedback">
                 Please enter a valid date for shipping updates.
               </div>

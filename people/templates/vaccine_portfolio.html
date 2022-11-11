@@ -88,7 +88,7 @@
       <div class="position-sticky pt-3 sidebar-sticky">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">
+            <a class="nav-link" aria-current="page" href="/">
               <span data-feather="home" class="align-text-bottom"></span>
               Visão geral
             </a>
@@ -101,7 +101,7 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/shopping_list/">
-              <span action="{% url 'shooping_list' %}" data-feather="shopping-cart" class="align-text-bottom"></span>
+              <span data-feather="shopping-cart" class="align-text-bottom"></span>
               Lista de compras
             </a>
           </li>
@@ -112,7 +112,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/vaccine/">
+            <a class="nav-link active" href="#">
               <span data-feather="activity" class="align-text-bottom"></span>
               Carteirinha de vacinas
             </a>
@@ -128,12 +128,47 @@
     </nav>
 
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-      
-      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Calendário</h1>
-      </div>
 
-      <iframe src="https://calendar.google.com/calendar/embed?src=2deac1987a29a2da21bbe32281e91438f06506016aeea2b9e7a2d9111f6e36ba%40group.calendar.google.com&ctz=America%2FFortaleza" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Carteira de vacinação</h1>
+        <a class="btn btn-outline-primary" href="/register_vaccine/"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
+        </svg></a>
+      </div>
+    
+      <div class="album py-5 bg-light">
+        <div class="container">
+          <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+
+            {% for vac in vaccine %}
+            <div class="col">
+              <div class="card shadow-sm">
+                <!-- <svg class="bd-placeholder-img card-img-top" width="50%" height="225" xmlns="http://www.w3.org/2000/svg" role="img"  preserveAspectRatio="xMidYMid slice" focusable="false">
+                  <title>Placeholder</title>
+                  <rect width="100%" height="100%" fill="#55595c"/>
+                </svg> -->
+                <div class="card-body">
+                  <!-- <text x="50%" y="50%" fill="#eceeef" dy=".3em"></text> -->
+                  <p class="card-text">{{ vac.name }} | {{ vac.description }}</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-sm btn-success" disabled readonly>Realizado</button>
+                      <a class="btn btn-outline-danger" href="/delete_task/{{ i.id }}"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                        <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
+                        </svg>
+                        </a>
+                      <!-- <button type="button" class="btn btn-sm btn-outline-secondary"></button> -->
+                    </div>
+                    <small class="text-muted">{{ vaccine_l.ref_date }}</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+
+          </div>
+        </div>
+      </div>
 
     </main>
   </div>

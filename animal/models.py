@@ -14,13 +14,9 @@ class Animal(models.Model):
 
 
 class VaccineCard(models.Model):
-    start_date = models.DateTimeField(blank=True, null=True)
-    end_date = models.DateTimeField(blank=True, null=True)
-    animals = models.ManyToManyField("Animal", verbose_name="animals")
+    ref_date = models.DateTimeField(blank=True, null=True)
+    animal_id = models.ForeignKey('Animal', on_delete=models.CASCADE, null=True)
     vaccines = models.ManyToManyField("Vaccine", verbose_name="vaccines")
-
-    def __str__(self):
-        return self.animals.name
 
 
 class Vaccine(models.Model):
@@ -38,11 +34,6 @@ class TaskList(models.Model):
     animal_id = models.ForeignKey('Animal', on_delete=models.CASCADE, null=True)
     tasks = models.ManyToManyField("Task", verbose_name="tasks")
 
-    def __str__(self):
-        return
-        names = ', '.join([i for i in self.animals.name])
-        return names
-
 
 class Task(models.Model):
     name = models.CharField(max_length=250, blank=True, null=True)
@@ -56,9 +47,6 @@ class ShoppingList(models.Model):
     ref_date = models.DateTimeField(blank=True, null=True)
     animal_id = models.ForeignKey('Animal', on_delete=models.CASCADE)
     products = models.ManyToManyField("Product", verbose_name="products")
-
-    def __str__(self):
-        return
     
 
 class Product(models.Model):

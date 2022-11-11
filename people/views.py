@@ -2,9 +2,13 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 
-from .models import People
-from animal.models import Animal, ShoppingList, TaskList
-from .forms import UserForm, PeopleForm, AddressForm, ProductForm, TaskForm
+from .models import People, Address
+from animal.models import Animal, ShoppingList, TaskList, Vaccine, VaccineCard, Task, Product
+from .forms import (
+    UserForm, PeopleForm, AddressForm,
+    ProductForm, TaskForm, VaccineForm,
+    AnimalForm
+)
 
 
 def people_login(request):
@@ -45,9 +49,9 @@ def create_user(request):
                 # import ipdb ; ipdb.set_trace()
                 people_f.user = user_s
                 people_s = people_f.save()
-            if address_f.is_valid():
-                address_f.people_id = people_s
-                address_f.save()
+                if address_f.is_valid():
+                    address_f.people_id = people_s
+                    address_f.save()
             return redirect('main')
 
     return render(
@@ -61,16 +65,15 @@ def main(request):
 
 def shooping_list(request):
     shopping_list = ShoppingList.objects.filter(animal_id=1)
-    #import ipdb ; ipdb.set_trace()
-    #shopping_list = shopping_list.products.all()
-    
-    #shopping_list = ShoppingList.objects.filter(animal_id=Animal.objects.filter(id=1).first())
-    return render(request, 'shooping_list.html', {'list': shopping_list})
+    product = []
+    for item in shopping_list:
+        for i in item.products.all():
+            product.append(i)
+    return render(request, 'shooping_list.html', {'list': shopping_list.first(), 'product': product})
 
 def register_product(request):
     form = ProductForm()
     if request.method == 'POST':
-        import ipdb ; ipdb.set_trace()
         ref_date = request.POST['ref_date']
         form = ProductForm(request.POST)
         if form.is_valid():
@@ -84,19 +87,23 @@ def register_product(request):
     return render(request, 'register_product.html', {'form': form})
 
 
+def delete_product(request, id):
+    Product.objects.filter(id=id).delete()
+    return redirect('shooping_list')
+
+
 def task_list(request):
     shopping_list = TaskList.objects.filter(animal_id=1)
-    #import ipdb ; ipdb.set_trace()
-    #shopping_list = shopping_list.products.all()
-    
-    #shopping_list = ShoppingList.objects.filter(animal_id=Animal.objects.filter(id=1).first())
-    return render(request, 'task_list.html', {'list': shopping_list})
+    tasks = []
+    for item in shopping_list:
+        for i in item.tasks.all():
+            tasks.append(i)
+    return render(request, 'task_list.html', {'list': shopping_list.first(), 'tasks': tasks})
 
 
 def register_task(request):
     form = TaskForm()
     if request.method == 'POST':
-        import ipdb ; ipdb.set_trace()
         ref_date = request.POST['ref_date']
         form = TaskForm(request.POST)
         if form.is_valid():
@@ -108,3 +115,79 @@ def register_task(request):
 
             return redirect('task_list')
     return render(request, 'register_task.html', {'form': form})
+
+
+def delete_task(request, id):
+    Task.objects.filter(id=id).delete()
+    return redirect('task_list')
+
+
+def my_profile(request):
+    people = People.objects.filter(id=1).first()
+    user = people.user
+    address = Address.objects.filter()
+    return render(request, 'profile.html', {'people': people, 'user': user, 'address': address})
+
+
+def vaccine(request):
+    vaccine_l = VaccineCard.objects.filter(animal_id=1)
+    vaccine = []
+    for item in vaccine_l:
+        for i in item.vaccines.all():
+            vaccine.append(i)
+    return render(request, 'vaccine_portfolio.html', {'vaccine_l': vaccine_l.first(),'vaccine': vaccine})
+
+
+def register_vaccine(request):
+    form = VaccineForm()
+    if request.method == 'POST':
+        ref_date = request.POST['ref_date']
+        form = VaccineForm(request.POST)
+        if form.is_valid():
+            
+            form_s = form.save()
+            vaccine = VaccineCard(ref_date=ref_date, animal_id=Animal.objects.filter(id=1).first())
+            vaccine.save()
+            vaccine.vaccines.add(form_s)
+            vaccine.save()
+
+            return redirect('vaccine')
+    return render(request, 'register_vaccine.html', {'form': form})
+
+
+def delete_vaccine(request, id):
+    Vaccine.objects.filter(id=id).delete()
+    return redirect('vaccine')
+
+
+def main_external(request):
+    return render(request, 'main_external.html')
+
+
+def pricing(request):
+    return render(request, 'pricing.html')
+
+
+def pet_list(request):
+    animal = Animal.objects.filter(people_id=1).all()
+    return render(request, 'pet_list.html', {'animal': animal})
+
+def delete_pet(request, id):
+    Animal.objects.filter(id=id).delete()
+    return redirect('pet_list')
+
+
+def pet_register(request):
+    form = AnimalForm()
+    if request.method == 'POST':
+
+        form = AnimalForm(request.POST)
+
+        animal = Animal(
+            name=request.POST['name'], birthday=request.POST['birthday'],
+            breed=request.POST['breed'], weight=request.POST['weight'],
+            height=request.POST['height'], people_id=People.objects.filter(id=1).first()
+        )
+        animal.save()
+        return redirect('pet_list')
+    return render(request, 'register_pet.html', {'form': form})
